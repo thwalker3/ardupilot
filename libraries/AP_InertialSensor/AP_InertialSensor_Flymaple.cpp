@@ -22,7 +22,7 @@
 // ADXL345 Accelerometer http://www.analog.com/static/imported-files/data_sheets/ADXL345.pdf
 
 #include <AP_HAL.h>
-#if CONFIG_HAL_BOARD == HAL_BOARD_FLYMAPLE
+#if CONFIG_HAL_BOARD == HAL_BOARD_FLYMAPLE || CONFIG_HAL_BOARD == HAL_BOARD_BEAGLEBONE
 
 #include "AP_InertialSensor_Flymaple.h"
 
@@ -128,8 +128,10 @@ uint16_t AP_InertialSensor_Flymaple::_init_sensor( Sample_rate sample_rate )
 
     // Init the Gyro
     // Expect to read the same as the Gyro I2C adress:
+    // FIXME WALKERT : oddly, getting 0x69 back instead of 0x68
     hal.i2c->readRegister(FLYMAPLE_GYRO_ADDRESS, FLYMAPLE_GYRO_WHO_AM_I, &data);
-    if (data != FLYMAPLE_GYRO_ADDRESS)
+    //if (data != FLYMAPLE_GYRO_ADDRESS)
+    if (data != 0x69)
         hal.scheduler->panic(PSTR("AP_InertialSensor_Flymaple: could not find ITG-3200 accelerometer sensor"));
     hal.i2c->writeRegister(FLYMAPLE_GYRO_ADDRESS, FLYMAPLE_GYRO_PWR_MGM, 0x00);
     hal.scheduler->delay(1);

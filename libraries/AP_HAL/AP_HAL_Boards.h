@@ -46,6 +46,9 @@
 #elif CONFIG_HAL_BOARD == HAL_BOARD_EMPTY
 #define AP_HAL_BOARD_DRIVER AP_HAL_Empty
 #define HAL_BOARD_NAME "EMPTY"
+#elif CONFIG_HAL_BOARD == HAL_BOARD_BEAGLEBONE
+#define AP_HAL_BOARD_DRIVER AP_HAL_BeagleBone
+#define HAL_BOARD_NAME "BeagleBone"
 #else
 #error "Unknown CONFIG_HAL_BOARD type"
 #endif

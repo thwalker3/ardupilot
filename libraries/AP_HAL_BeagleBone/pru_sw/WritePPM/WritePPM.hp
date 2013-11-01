@@ -1,0 +1,80 @@
+#ifndef _WritePPM_
+#define _WritePPM__
+
+
+// ***************************************
+// *      Global Macro definitions       *
+// ***************************************
+
+#define CONST_PRUCFG	C4
+#define CONST_PRUDRAM   C24
+
+// Addresses for constant table registers
+#define CTBIR_0		0x22020
+#define CTPPR_0		0x22028 
+#define CTPPR_1         0x2202C 	
+
+// Borrow the IEP just for its timer
+#define IEP_GLOBAL_CFG        	0x2E000
+#define IEP_GLOBAL_STATUS	(IEP_GLOBAL_CFG + 0x04)
+#define IEP_COMPEN		(IEP_GLOBAL_CFG + 0x08)
+#define IEP_COUNT		(IEP_GLOBAL_CFG + 0x0C)
+#define IEP_CMP_STATUS		(IEP_GLOBAL_CFG + 0x40)
+// Poweron default (CMP_INC == DEFAULT_INC == 5, disabled)
+#define IEP_CFG_DEFAULT		0x550
+#define IEP_CNT_ENABLE		0x1
+
+.macro  LD32
+.mparam dst,src
+    LBBO    dst,src,#0x00,4
+.endm
+
+.macro  LD16
+.mparam dst,src
+    LBBO    dst,src,#0x00,2
+.endm
+
+.macro  LD8
+.mparam dst,src
+    LBBO    dst,src,#0x00,1
+.endm
+
+.macro ST32
+.mparam src,dst
+    SBBO    src,dst,#0x00,4
+.endm
+
+.macro ST16
+.mparam src,dst
+    SBBO    src,dst,#0x00,2
+.endm
+
+.macro ST8
+.mparam src,dst
+    SBBO    src,dst,#0x00,1
+.endm
+
+
+// ***************************************
+// *    Global Structure Definitions     *
+// ***************************************
+
+
+
+// ***************************************
+// *     Global Register Assignments     *
+// ***************************************
+
+// Global
+#define regCurrentTime      r8
+#define regFrameStartTime   r9
+#define regFrameElapsedTime r10
+
+// Per Channel
+// Public
+#define regPulseWidth       r11
+// Private
+#define regPulseStartDelay   r12
+
+
+#endif //_WritePPM_
