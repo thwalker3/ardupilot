@@ -26,7 +26,6 @@ void BeagleBoneRCOutput::set_freq(uint32_t chmask, uint16_t freq_hz)
 
 uint16_t BeagleBoneRCOutput::get_freq(uint8_t ch) 
 {
-    hal.console->printf("RCOutput: No support for varying output frequency currently!");   
     return 50;
 }
 

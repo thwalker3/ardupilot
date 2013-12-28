@@ -96,6 +96,7 @@
  # define CONFIG_SONAR DISABLED
  # define CONFIG_SONAR_SOURCE DISABLED
  # define MAGNETOMETER ENABLED
+ # define GPS_PROTOCOL GPS_PROTOCOL_AUTO
 #endif
 
 //////////////////////////////////////////////////////////////////////////////

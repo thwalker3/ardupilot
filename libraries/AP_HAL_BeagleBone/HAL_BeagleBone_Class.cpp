@@ -74,6 +74,8 @@ void HAL_BeagleBone::init(int argc,char* const argv[]) const
 
     hal.scheduler->init(NULL);
     hal.uartA->begin(115200);
+    uartBDriver.set_device_path("/dev/ttyO5");
+    hal.uartB->begin(115200);
     hal.i2c->begin();
     hal.rcin->init(NULL);
     hal.rcout->init(NULL);

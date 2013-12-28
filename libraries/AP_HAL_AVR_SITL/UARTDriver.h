@@ -3,14 +3,16 @@
 #ifndef __AP_HAL_AVR_SITL_UART_DRIVER_H__
 #define __AP_HAL_AVR_SITL_UART_DRIVER_H__
 #include <AP_HAL.h>
-#if CONFIG_HAL_BOARD == HAL_BOARD_AVR_SITL
+#if CONFIG_HAL_BOARD == HAL_BOARD_AVR_SITL || CONFIG_HAL_BOARD == HAL_BOARD_BEAGLEBONE
 
 #include <stdint.h>
 #include <stdarg.h>
+
 #include "AP_HAL_AVR_SITL_Namespace.h"
 
 class AVR_SITL::SITLUARTDriver : public AP_HAL::UARTDriver {
 public:
+#if CONFIG_HAL_BOARD == HAL_BOARD_AVR_SITL
     friend class AVR_SITL::SITL_State;
 
 	SITLUARTDriver(const uint8_t portNumber, SITL_State *sitlState) {
@@ -18,6 +20,12 @@ public:
         _rxSpace = _default_rx_buffer_size;
         _txSpace = _default_tx_buffer_size;
         _sitlState = sitlState;
+#else
+    SITLUARTDriver(const uint8_t portNumber, void *notused) {
+        _portNumber = portNumber;
+        _rxSpace = _default_rx_buffer_size;
+        _txSpace = _default_tx_buffer_size;
+#endif
         
         _fd = -1;
         _listen_fd = -1;

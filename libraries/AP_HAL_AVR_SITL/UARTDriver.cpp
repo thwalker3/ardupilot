@@ -18,7 +18,7 @@
 //      Copyright (c) 2010 Michael Smith. All rights reserved.
 //
 #include <AP_HAL.h>
-#if CONFIG_HAL_BOARD == HAL_BOARD_AVR_SITL
+#if CONFIG_HAL_BOARD == HAL_BOARD_AVR_SITL || CONFIG_HAL_BOARD == HAL_BOARD_BEAGLEBONE
 
 #include <limits.h>
 #include <stdlib.h>
@@ -60,6 +60,9 @@ void SITLUARTDriver::begin(uint32_t baud, uint16_t rxSpace, uint16_t txSpace)
     if (rxSpace != 0) {
         _rxSpace = rxSpace;
     }
+#if CONFIG_HAL_BOARD == HAL_BOARD_BEAGLEBONE
+    _tcp_start_connection(true);
+#else
     switch (_portNumber) {
     case 0:
         _tcp_start_connection(true);
@@ -75,6 +78,7 @@ void SITLUARTDriver::begin(uint32_t baud, uint16_t rxSpace, uint16_t txSpace)
         _tcp_start_connection(false);
         break;
     }
+#endif
 }
 
 void SITLUARTDriver::end() 
@@ -127,13 +131,14 @@ int16_t SITLUARTDriver::read(void)
     if (available() <= 0) {
         return -1;
     }
-
+#if CONFIG_HAL_BOARD == HAL_BOARD_AVR_SITL
     if (_portNumber == 1) {
         if (_sitlState->gps_read(_fd, &c, 1) == 1) {
             return (uint8_t)c;
         }
         return -1;
     }
+#endif
 
     if (_console) {
         return ::read(0, &c, 1);
@@ -215,7 +220,11 @@ void SITLUARTDriver::_tcp_start_connection(bool wait_for_connection)
 #ifdef HAVE_SOCK_SIN_LEN
             sockaddr.sin_len = sizeof(sockaddr);
 #endif
+#if CONFIG_HAL_BOARD == HAL_BOARD_BEAGLEBONE
+            sockaddr.sin_port = htons(5760);
+#else
             sockaddr.sin_port = htons(_sitlState->base_port() + _portNumber);
+#endif
             sockaddr.sin_family = AF_INET;
 
             _listen_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -244,9 +253,12 @@ void SITLUARTDriver::_tcp_start_connection(bool wait_for_connection)
                 fprintf(stderr, "listen failed - %s\n", strerror(errno));
                 exit(1);
             }
-
+#if CONFIG_HAL_BOARD == HAL_BOARD_BEAGLEBONE
+            fprintf(stderr, "Serial port %u on TCP port %u\n", _portNumber, 5760);
+#else
             fprintf(stderr, "Serial port %u on TCP port %u\n", _portNumber, 
                     _sitlState->base_port() + _portNumber);
+#endif
             fflush(stdout);
         }
 

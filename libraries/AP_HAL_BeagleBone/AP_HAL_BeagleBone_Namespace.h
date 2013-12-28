@@ -9,6 +9,7 @@
 
 namespace BeagleBone {
     class BeagleBoneUARTDriver;
+    class BeagleBoneTCPUARTDriver;
     class BeagleBoneI2CDriver;
     class BeagleBoneSPIDeviceManager;
     class BeagleBoneSPIDeviceDriver;

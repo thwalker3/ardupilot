@@ -4,6 +4,16 @@ using namespace BeagleBone;
 BeagleBoneRCInput::BeagleBoneRCInput()
 {}
 
+/*
+ * Examples from a Hobbyking 6ch RX
+ * stick 
+ * 011875C1:001243C8 low
+ * 011877BA:001E20E9 high
+ * dial
+ * 01186D65:000F4CFE low
+ * 011877BA:001ECF4E high
+ */
+
 void BeagleBoneRCInput::init(void* unused)
 {
     uid_t euid;
