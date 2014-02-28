@@ -1,3 +1,6 @@
+This is a hacked up local fork to support running (in userspace) on a beaglebone (AP_HAL_BeagleBone)
+
+
 # ArduPilot Project
 
 You can find lots of development information at the [ArduPilot development site](http://dev.ardupilot.com)
